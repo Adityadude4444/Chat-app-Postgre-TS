@@ -17,6 +17,7 @@ model User {
   id             String      @id @default(cuid())
   username       String      @unique
   fullname       String
+  password String
   gender         Gender
   profile        String
   conversations  Conversation[]
