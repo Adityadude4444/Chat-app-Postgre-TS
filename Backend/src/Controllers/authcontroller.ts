@@ -24,7 +24,6 @@ export const Signup = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Hash the password and create a new user
     const salt = await bcrypt.genSalt(10);
     const hashedpass = await bcrypt.hash(password, salt);
     const profile =
@@ -91,9 +90,11 @@ export const Logout = (req: Request, res: Response): void => {
   });
   res.status(200).json({ msg: "Logged out successfully" });
 };
+
+// Get current authenticated user
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = req.user;
+    const userId = req.user?.id;
 
     if (!userId) {
       res.status(401).json({ msg: "User not authenticated" });

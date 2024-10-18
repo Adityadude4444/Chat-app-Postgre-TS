@@ -21,7 +21,11 @@ const middle = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
             return;
         }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.id;
+        // Initialize req.user if undefined
+        if (!req.user) {
+            req.user = { id: "" };
+        }
+        req.user.id = decoded.id;
         next();
     }
     catch (error) {

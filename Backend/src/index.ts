@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", authroutes);
 
-app.use("/api/messages", messagerouth);
+app.use("/api/message", messagerouth);
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");

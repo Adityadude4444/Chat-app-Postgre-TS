@@ -33,7 +33,6 @@ const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(400).json({ msg: "User already exists" });
             return;
         }
-        // Hash the password and create a new user
         const salt = yield bcryptjs_1.default.genSalt(10);
         const hashedpass = yield bcryptjs_1.default.hash(password, salt);
         const profile = "https://png.pngtree.com/png-vector/20240427/ourlarge/pngtree-user-icon-brush-vector-png-image_12327707.png";
@@ -96,9 +95,11 @@ const Logout = (req, res) => {
     res.status(200).json({ msg: "Logged out successfully" });
 };
 exports.Logout = Logout;
+// Get current authenticated user
 const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const userId = req.user;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!userId) {
             res.status(401).json({ msg: "User not authenticated" });
             return;

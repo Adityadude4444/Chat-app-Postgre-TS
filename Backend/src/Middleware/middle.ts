@@ -1,8 +1,18 @@
+// src/middleware/authmiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 interface DecodedToken extends JwtPayload {
   id: string;
+}
+declare global {
+  namespace Express {
+    export interface Request {
+      user: {
+        id: string;
+      };
+    }
+  }
 }
 
 const middle = async (
@@ -20,7 +30,11 @@ const middle = async (
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
 
-    req.user = decoded.id;
+    // Initialize req.user if undefined
+    if (!req.user) {
+      req.user = { id: "" };
+    }
+    req.user.id = decoded.id;
 
     next();
   } catch (error) {
