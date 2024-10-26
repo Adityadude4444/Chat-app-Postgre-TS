@@ -38,6 +38,7 @@ export const AuthcontextProvider = ({ children }: { children: ReactNode }) => {
           throw new Error(data.error);
         }
         setAuthuser(data);
+        console.log(data);
       } catch (error) {
         console.log(error);
       } finally {
