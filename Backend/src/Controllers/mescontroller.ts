@@ -52,36 +52,41 @@ export const Sendmessage = async (
     res.status(500).json({ msg: "Internal server error" });
   }
 };
+
 export const Getmsg = async (req: Request, res: Response): Promise<void> => {
   const senderid = req.user.id;
   const { id: chatwith } = req.params;
-  const conversation = await prisma.conversation.findFirst({
-    where: {
-      participatesid: {
-        hasEvery: [senderid, chatwith],
-      },
-    },
-    include: {
-      messages: {
-        orderBy: {
-          createdat: "asc",
+
+  try {
+    const conversation = await prisma.conversation.findFirst({
+      where: {
+        participatesid: {
+          hasEvery: [senderid, chatwith],
         },
       },
-    },
-  });
-  if (!conversation) {
-    res.status(200).json([]);
-  }
-  res.status(200).json(conversation?.messages);
-};
-export const Sidebar = async (req: Request, res: Response): Promise<void> => {
-  const authuser = req.user.id;
-  const users = await prisma.user.findMany({
-    where: {
-      id: {
-        not: authuser,
+      include: {
+        messages: {
+          orderBy: {
+            createdat: "asc",
+          },
+        },
       },
-    },
+    });
+
+    if (!conversation) {
+      res.status(200).json([]); // Return early if no conversation is found
+      return;
+    }
+
+    res.status(200).json(conversation.messages); // Return messages if conversation exists
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ msg: "Internal server error" }); // Return error response
+  }
+};
+
+export const Sidebar = async (req: Request, res: Response): Promise<void> => {
+  const users = await prisma.user.findMany({
     select: {
       fullname: true,
       id: true,

@@ -8,6 +8,7 @@ import {
 } from "react";
 
 type Authusertype = {
+  token: any;
   id: string;
   fullname: string;
   email: string;
@@ -32,13 +33,12 @@ export const AuthcontextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     async function authenticate() {
       try {
-        const res = await fetch("/api/user/myinfo");
+        const res = await fetch("http://localhost:5000/api/user/myinfo");
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error);
         }
         setAuthuser(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       } finally {

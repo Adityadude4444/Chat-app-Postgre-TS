@@ -1,12 +1,16 @@
 import { create } from "zustand";
 
 export type ConversationType = {
+  profile: string | undefined;
+  fullname: string;
   id: string;
   fullName: string;
   profilePic: string;
 };
 
 export type MessageType = {
+  senderid: string;
+  fromMe: boolean;
   id: string;
   body: string;
   senderId: string;

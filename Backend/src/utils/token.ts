@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Response } from "express";
-
+import dotenv from "dotenv";
+dotenv.config();
 async function generatetokenandsetcookie(id: string, res: Response) {
   const token = jwt.sign({ id }, process.env.JWT_SECRET!, {
     expiresIn: "15d",

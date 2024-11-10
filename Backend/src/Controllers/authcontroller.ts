@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import prisma from "../db/prisma";
+
 import bcrypt from "bcryptjs";
 import generatetokenandsetcookie from "../utils/token";
+import prisma from "../db/prisma";
 
 // Signup function
 export const Signup = async (req: Request, res: Response): Promise<void> => {
@@ -58,13 +59,11 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password } = req.body;
 
-    // Check for missing fields
     if (!username || !password) {
       res.status(400).json({ error: "Please provide username and password" });
       return;
     }
 
-    // Debugging: Log received data
     console.log("Received login request:", { username, password });
 
     const existing = await prisma.user.findUnique({ where: { username } });
@@ -73,7 +72,6 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Check password
     const isMatch = await bcrypt.compare(password, existing.password);
     if (!isMatch) {
       res.status(401).json({ error: "Invalid credentials" });
@@ -82,7 +80,8 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
 
     // Generate and set token
     const token = await generatetokenandsetcookie(existing.id, res);
-    res.status(200).json({ message: "Login successful", token });
+    const fullname = existing.fullname;
+    res.status(200).json({ message: "Login successful", token, fullname });
   } catch (error: any) {
     console.error("Login error:", error.message);
     res.status(500).json({ error: "Internal server error" });

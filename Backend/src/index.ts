@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors"; // Import CORS
+import cors from "cors";
 import authroutes from "./Routers/authrouter";
 import messagerouth from "./Routers/messagerouter";
 import dotenv from "dotenv";
@@ -8,11 +8,10 @@ import cookieparser from "cookie-parser";
 dotenv.config();
 const app = express();
 
-// Configure CORS to allow requests from your frontend's origin
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your frontend URL
-    credentials: true, // Enable cookies to be sent with requests
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
