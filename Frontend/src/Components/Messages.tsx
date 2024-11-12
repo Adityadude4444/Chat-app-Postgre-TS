@@ -45,10 +45,10 @@ const Messages = () => {
   }, [selectedConversation, authuser, setMessages]); // Re-fetch messages when selectedConversation or authuser changes
 
   return (
-    <div className="flex flex-col max-h-[500px] overflow-y-auto p-4 gap-2 rounded-lg">
+    <div className="flex flex-col max-h-[500px] p-4 gap-2 rounded-lg">
       {messages.map((item) => (
         <Message
-          key={item.id} // Use id for unique keys
+          key={item.id} // Use `id` as unique key
           message={{
             body: item.body,
             senderid: item.senderid,

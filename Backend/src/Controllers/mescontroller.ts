@@ -8,7 +8,7 @@ export const Sendmessage = async (
 ): Promise<void> => {
   try {
     const senderid = req.user.id;
-    const { body } = req.body;
+    const { message: body } = req.body; // Explicitly rename "message" to "body"
     const { id: receiverid } = req.params;
 
     let conversation = await prisma.conversation.findFirst({
@@ -18,6 +18,7 @@ export const Sendmessage = async (
         },
       },
     });
+
     if (!conversation) {
       conversation = await prisma.conversation.create({
         data: {
@@ -27,6 +28,7 @@ export const Sendmessage = async (
         },
       });
     }
+
     const newmessage = await prisma.messages.create({
       data: {
         senderid,
@@ -34,6 +36,7 @@ export const Sendmessage = async (
         conversationids: conversation.id,
       },
     });
+
     if (newmessage) {
       conversation = await prisma.conversation.update({
         where: { id: conversation.id },
@@ -44,7 +47,7 @@ export const Sendmessage = async (
         },
       });
       res.status(201).json({
-        msg: "succesfully sent",
+        msg: "Successfully sent",
       });
     }
   } catch (error: any) {

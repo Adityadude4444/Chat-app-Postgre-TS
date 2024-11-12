@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import useSendmsg from "../../hooks/Sendmsghook";
 
 interface MessageProps {
   message: {
@@ -29,10 +30,12 @@ const Message: React.FC<MessageProps> = ({ message }) => {
     fetchAuthId();
   }, []);
 
+  // Show a loading spinner/message while fetching the auth ID
   if (loading) {
-    return null; // Or a loading spinner/message if preferred
+    return <div>Loading...</div>; // Or customize this loading indicator as needed
   }
 
+  // Determine if the message is from the current user
   const fromMe = authid === message.senderid;
 
   return (
